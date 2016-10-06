@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo</title>
+    <style>
+        .container {
+            margin: 0 auto;
+            width: 800px;
+        }
+        a, a:visited {
+            text-decoration: none;
+        }
+        .clear-fix::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        .left {
+            float: left;
+        }
+        .right {
+            float: right;
+        }
+        .todo-input-add, .todo-input-update {
+            width: 713px;
+        }
+        div {
+            margin-top: 5px;
+        }
+        .hide {
+            display: none;
+        }
+        .todo-update {
+            margin-top: 5px;
+        }
+        .right.tobo-time {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Todo</h1>
+    <div class="todo-new">
+        <form action={{ url_for('todo.add')}} method="post">
+            <input type="text" class="todo-input-add" name="task", placeholder="欢迎使用...">
+            <button class="todo-button-add">New Todo</button>
+        </form>
+    </div>
+    <div class="todo-main">
+        {% for t in todos %}
+        <div class="todo-cell clear-fix">
+            <div class="todo-content left">
+                {{ t.task }}
+            </div>
+            <div class="right">
+                <a href={{ url_for('todo.delete', todo_id=t.id)}}>
+                    <button class="todo-button-delete">完成</button>
+                </a>
+
+                <a href={{ url_for('todo.edit_view', todo_id=t.id)}}>
+                    <button class="todo-button-update">修改</button>
+                </a>
+
+            </div>
+            <div class="todo-update left clear-fix hide">
+                <input type="text" class="todo-input-update">
+                <button class="todo-update-commit">提交</button>
+            </div>
+            <div class="right tobo-time">
+                {{ t.created_time }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

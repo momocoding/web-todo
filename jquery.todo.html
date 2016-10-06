@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo</title>
+    <script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+    <style>
+        .container {
+            margin: 0 auto;
+            width: 800px;
+        }
+        .clear-fix::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+        .left {
+            float: left;
+        }
+        .right {
+            float: right;
+        }
+        .todo-input-add, .todo-input-update {
+            width: 713px;
+        }
+        div {
+            margin-top: 5px;
+        }
+        .hide {
+            display: none;
+        }
+        .todo-update {
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Todo</h1>
+        <div class="todo-new">
+            <input type="text" class="todo-input-add" name="content", placeholder="欢迎使用...">
+            <button class="todo-button-add">New Todo</button>
+        </div>
+        <div class="todo-main">
+            <div class="todo-cell clear-fix">
+                <div class="todo-content left">
+                    你好，这是第一个todo
+                </div>
+                <div class="right">
+                    <button class="todo-button-delete">完成</button>
+                    <button class="todo-button-update">修改</button>
+                </div>
+                <div class="todo-update left clear-fix hide">
+                    <input type="text" class="todo-input-update">
+                    <button class="todo-update-commit">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var log = function(){
+            console.log(arguments)
+        }
+        $(document).ready(function(){
+
+            // 添加 todo
+            $('.todo-button-add').on('click', function(){
+                var inputDiv = $(this).closest('.todo-new')
+                var input = inputDiv.find('.todo-input-add')
+                var content = input.val()
+                var addDiv = inputDiv.closest('.container').find('.todo-main')
+                var addTemplate = `
+                <div class="todo-cell clear-fix">
+                    <div class="todo-content left">
+                        ${content}
+                    </div>
+                    <div class="right">
+                        <button class="todo-button-delete">完成</button>
+                        <button class="todo-button-update">修改</button>
+                    </div>
+                    <div class="todo-update left clear-fix hide">
+                        <input type="text" class="todo-input-update">
+                        <button class="todo-update-commit">提交</button>
+                    </div>
+                </div>
+                `
+                addDiv.prepend(addTemplate)
+                input.val('')
+            })
+            // 删除 todo
+            $('.todo-main').on('click', '.todo-button-delete', function(){
+                var todo = $(this).closest('.todo-cell')
+                todo.slideUp()
+            })
+
+            // 显示更新todo 界面
+            $('.todo-main').on('click', '.todo-button-update', function(){
+                var todo = $(this).closest('.todo-cell')
+                var update = todo.find('.todo-update')
+                update.slideToggle()
+            })
+
+            // 更新 todo
+            $('.todo-main').on('click', '.todo-update-commit', function(){
+                var todo = $(this).closest('.todo-cell')
+                var input = todo.find('.todo-input-update')
+                var content = input.val()
+                var update = todo.find('.todo-update')
+                var div = todo.find('.todo-content')
+                div.text(content)
+                update.slideUp()
+                input.val('')
+            })
+        })
+    </script>
+</body>
+</html>
